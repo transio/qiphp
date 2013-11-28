@@ -1,13 +1,13 @@
 <?php
-namespace Qi\Mvc\Controller;
+namespace Qi\Controller;
 
 class Factory
 {
     public static function create(\Qi\Application $application, \Qi\Http\Resource $resource)
     {
-        $application->getConfig()->read("path.controllers");
-        
-        $controllerName = "\\App\\Controller\\" . $resource->getControllerName();
-        $controller = new $controllerName($application, $resource);
+        $path = $application->getConfig()->read("path.controllers");
+        $controller = (new \Qi\Token\Token($resource->getController(), TokenCase::UNDERSCORE))->toTitle();
+        $controllerClass = "\\app\\controllers\\{$controller}Controller";
+        $controller = new $controllerClass($application, $resource);
     }
 }

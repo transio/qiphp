@@ -10,7 +10,7 @@ class Application
     public function __construct(Config $config)
     {
         $this->_config = $config;
-`    }
+    }
     
     public function run()
     {
@@ -19,11 +19,17 @@ class Application
         
         try {
             // Build and execute the controller
-            $this->_controller = new \Qi\Controller\Factory::create($this, $resource);
+            $this->_controller = \Qi\Controller\Factory::create($this, $this->_resource);
             $this->_controller->execute();
         } catch (Exception $e) {
             // Unhandled exception
         }
     }
+
+    public function getConfig()
+    {
+        return $this->_config;
+    }
 }
+
 

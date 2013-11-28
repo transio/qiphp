@@ -13,7 +13,7 @@ class Token
     /**
      * constructor
      */
-    public function __construct($value, $case=TokenCase::UNDERSCORE, $number=TokenNumer::SINGULAR)
+    public function __construct($value, $case=TokenCase::UNDERSCORE, $number=TokenNumber::SINGULAR)
     {
         $this->_value = $value;
         $this->_case = $case;
