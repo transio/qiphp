@@ -15,11 +15,11 @@ class Application
     public function run()
     {
         // Get the resource
-        $this->_resource = new \Qi\Http\Resource();
+        $this->_resource = \Qi\Http\Resource::parse();
         
         try {
             // Build and execute the controller
-            $this->_controller = new \Qi\Mvc\Controller\Factory::create($this, $resource);
+            $this->_controller = new \Qi\Controller\Factory::create($this, $resource);
             $this->_controller->execute();
         } catch (Exception $e) {
             // Unhandled exception

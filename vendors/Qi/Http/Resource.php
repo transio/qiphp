@@ -29,39 +29,58 @@ class Resource
     
     private $parts = array();
     
-    public function __construct($controller=null, $action=null, $params=null, $fragment=null, array $query=null, $extension=null)
+    public static function parse()
     {
-        global $settings;
-        
-        $this->controller = !is_null($controller) ? $controller : $settings->controller->default[0];
-        if (!is_null($action)) {
-            $this->action = $action;
-        } else {
-            // Default actions implementation
-            if (!empty($settings->module->defaultActions)) {
-                foreach ($settings->module->defaultActions as $match => $actions) {
-                    if ((!strlen($match) || strpos($this->module, $match) !== false) && count($actions) >= 2) {
-                        $this->action = $this->id > 0 ? $actions[1] : $actions[0];
-                        break;
-                    }
-                }
-            } else {
-                // TODO - add default action option to settings?
-                $action = "index";
+        $resource = new Resource('');
+        foreach (self::$URI_PARTS as $part) {
+            if (isset($_GET[$part]) && !empty($_GET[$part])) {
+                $resource->set($part, $_GET[$part]);
             }
         }
-        if (!is_null($extension)) $this->extension = $extension;
-        $this->fragment = strlen($fragment) ? $fragment : null;
-        if (!empty($params)) {
-            $this->params = $params;
-        } else {
-            $this->params = array();
-        }
+        return $resource;
     }
     
+    public function __construct($controller, $action=null, array $params=array(), $fragment=null, array $query=null, $extension=null)
+    {
+        $this->controller = $controller;
+        $this->action = is_null($action) ? "index" : $action;
+        $this->extension = empty($extension) ? null : $extension;
+        $this->fragment = empty($fragment) ? null : $fragment;
+        $this->params = empty($params) ? array() : $params;
+    }
+    
+    /**
+     * Returns the Current Uri as a String
+     * @return String the uri
+     */
     public function __toString()
     {
-        return $this->current();
+        $resource = array(
+            $this->parts[self::CONTROLLER],
+            $this->parts[self::ACTION]
+        );
+
+        if (!empty($this->parts[self::ARGS]))
+            $resource = array_merge($resource, $this->parts[self::ARGS]);
+
+        $resource = implode("/", $resource);
+        
+        if (!empty($this->parts[self::EXTENSION]))
+            $resource .= "." . $this->parts[self::EXTENSION];
+            
+        if (!empty($this->parts[self::QUERY])) {
+            $params = $this->parts[self::QUERY];
+            $keys = array_keys($params);
+            for ($i = 0; $i < count($keys); $i++) {
+                $params[$keys[$i]] = urlencode($keys[$i])."=".urlencode($params[$i]));
+            }
+            $resource .= "?" . implode("&", $params);
+        }
+        
+        if (!empty($this->parts[self::FRAGMENT]))
+            $resource .= "#" . $this->parts[self::FRAGMENT];
+            
+        return "/" . $resource;
     }
     
     public function go()
@@ -196,105 +215,6 @@ class Resource
     {
         return $this->parts[self::FRAGMENT];
     }
-    
-    
-    /**
-     * Parse a Uri Object from a Striing
-     * @return Uri
-     * @param $resource String - a 
-     */
-    public static function parse($url)
-    {
-        $urlParts = parse_url($url);
-        
-        // Get the Base Resource
-        $resource = $urlParts["path"];
-        if (substr($resource, 0, 1) == "/") {
-            $resource = substr($resource, 1);
-        }
-        
-        // Parse the Querystring
-        $query = isset($urlParts["query"]) ? $urlParts["query"] : "";
-        $params = array();
-        if (strlen($query)) {
-            $query = explode("&", $query);
-            foreach ($query as $param) {
-                $param = explode("=", $param);
-                $params[$param[0]] = $param[1];
-            }
-        }
-        
-        // Get the Fragment
-        $fragment = isset($urlParts["fragment"]) ? $urlParts["fragment"] : null;
-        
-        
-        // Parse the Extension from the Resource
-        $extension = null;
-        if (strripos($resource, ".") > strripos($resource, "/")) {
-            $extension = substr($resource, strripos($resource, ".") + 1);
-            $resource = substr($resource, 0, strripos($resource, "."));
-        } else {
-            //$extension = "html";
-        }
-        $module = null;
-        $action = null;
-        // Parse the Module / Action / Id from the Resource
-        $resourceParts = explode("/", $resource);
-        if (count($resourceParts) > 0 && (count($resourceParts) > 1 || $resourceParts[0] != "")) {
-            // Get the Action
-            // Get the Id if it exists
-            if (is_numeric($resourceParts[count($resourceParts)-1])) {
-                $id = $resourceParts[count($resourceParts)-1];
-                unset($resourceParts[count($resourceParts)-1]);
-            }
-            
-            $action = $resourceParts[count($resourceParts)-1];
-            unset($resourceParts[count($resourceParts)-1]);
-            
-            
-            // Get the Module
-            $module = implode("/", $resourceParts);
-        }
-        
-        // Return a new Uri object
-        if(!isset($id)) $id = null;
-        return new Uri($module, $id, $action, $fragment, $params, $extension);
-    }
-    
-    /**
-     * Returns the Current Uri as a String
-     * @return String the uri
-     */
-    public function format()
-    {
-        $resource = array(
-            $this->parts[self::CONTROLLER],
-            $this->parts[self::ACTION]
-        );
-
-        if (!empty($this->parts[self::ARGS]))
-            $resource = array_merge($resource, $this->parts[self::ARGS]);
-
-        $resource = implode("/", $resource);
-        
-        if (!empty($this->parts[self::EXTENSION]))
-            $resource .= "." . $this->parts[self::EXTENSION];
-            
-        if (!empty($this->parts[self::QUERY])) {
-            $params = $this->parts[self::QUERY];
-            $keys = array_keys($params);
-            for ($i = 0; $i < count($keys); $i++) {
-                $params[$keys[$i]] = urlencode($keys[$i])."=".urlencode($params[$i]));
-            }
-            $resource .= "?" . implode("&", $params);
-        }
-        
-        if (!empty($this->parts[self::FRAGMENT]))
-            $resource .= "#" . $this->parts[self::FRAGMENT];
-            
-        return "/" . $resource;
-    }
-    
     
     /**
      * Check if the Uri equals a given Uri
