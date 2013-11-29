@@ -4,8 +4,6 @@ namespace Qi;
 class Application
 {
     private $_config;
-    private $_resource;
-    private $_controller;
     
     public function __construct(Config $config)
     {
@@ -14,15 +12,20 @@ class Application
     
     public function run()
     {
-        // Get the resource
-        $this->_resource = \Qi\Http\Resource::parse();
-        
         try {
-            // Build and execute the controller
-            $this->_controller = \Qi\Controller\Factory::create($this, $this->_resource);
-            $this->_controller->execute();
+            // Get the resource
+            $resource = \Qi\Http\Resource::parse();
+        
+            // Build the controller
+            $controller = \Qi\Controller\Factory::create($this, $resource);
+            
+            // Execute it
+            $controller->execute();
+            
         } catch (Exception $e) {
             // Unhandled exception
+            print($e->getMessage());
+            print_r($e->getTrace());
         }
     }
 

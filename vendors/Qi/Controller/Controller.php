@@ -6,11 +6,11 @@ namespace Qi\Controller;
  */
 abstract class Controller
 {    
-    private $_application;
-    private $_resource;
+    protected $_application;
+    protected $_resource;
     private $_params;
     
-    public function __construct(Application $application, Resource $resource) {
+    public function __construct(\Qi\Application $application, \Qi\Http\Resource $resource)
     {
         $this->_application = $application;
         $this->_resource = $resource;
@@ -65,54 +65,45 @@ abstract class Controller
      * Tells the Executor to execute the action defined by the associated Resource
      */
     public function execute() {
-        if (!method_exists($this, $this->_resource->action))
+        if (!method_exists($this, $this->_resource->getAction()))
             throw new \Qi\Http\Exception\Http404Exception("Action not found: {$this->_resource->action}");
         $this->beforeFilter();
-        call_user_func_array(array($this, $this->_resource->action), $this->_resource->args);
+        call_user_func_array(array($this, $this->_resource->getAction()), $this->_resource->getArgs());
         $this->afterFilter();
     }
     
     /**
      * 
-     * @global type $settings
      * @param type $view
      * @param type $_params
      * @return type 
      */
-    public function render($view, $_params = null)
+    public function render($view=null, array $params=array())
     {
         $this->beforeRender();
         
+        // If no view name provided, use the name of the calling controller/action as the view name
+        if (empty($view)) {
+            $callers = debug_backtrace();
+            $pos = strrpos($callers[1]['class'], "\\")+1;
+            $controller = strtolower(substr($callers[1]['class'], $pos, -10));
+            $view = $controller . DS . $callers[1]['function'];
+        }
+        
         // Merge in externally set parameters with passed-in _params
-        $_params = is_array($_params) ? array_merge($this->_params, $_params) : $this->_params;
+        if (!empty($params))
+            $this->+params = array_merge($this->_params, $params);
         
-        // Switch _params to an object for easy reference by the view
-        $_params = (object) $_params;
+        // Generate the view file path
+        $path = BASE_PATH . DS . "app" . DS . "views" . DS . $view . ".php";
         
-        // Get the view path
-        $path = $settings->path->app . DIRECTORY_SEPARATOR . $view . ".tpl";
-        
+        // If the view doesn't exist, throw an exception
+        if (!file_exists($path)) throw new Exception("View not found ({$path}).");
+
         // Render the view
-        if (file_exists($path)) {
-            include($path);
-        } else {
-            throw new Exception("View not found ({$path}).");
-        }
-    
-        // Try to load the controller class
-        if (!empty($settings->controllers) &&
-                array_key_exists($request->pathInfo, $settings->controllers)) {
-            $controllerClass = $settings->controllers[$request->pathInfo];
-            $controller = new $controllerClass($request);
-        } else {
-            if (ArchetypeController::exists($request->pathInfo))
-            try {
-                $controller = new ArchetypeController($request->pathInfo);
-            } catch (Exception $e) {
-                return null;
-            }
-        }
+        include($path);
         
         $this->afterRender();
     }
 }
+

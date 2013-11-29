@@ -1,0 +1,11 @@
+Options +FollowSymLinks
+ 
+RewriteEngine On
+RewriteBase /
+
+RewriteCond %{HTTP_HOST} !^www\.fitment\.com$ [NC]
+RewriteRule ^(.*)$ http://www.fitment.com/$1 [R=301,L]
+#RewriteRule ^(.*)\.php$ /$1 [R=301,L]
+
+RewriteCond %{REQUEST_URI} !\.(css|gif|jpg|png|ico|txt|xml|js|pdf|htm|zip)$
+RewriteRule   ^(\w+)/?(\w+)?/?([\w\/]+)?/?$  /index.php?controller=$1&action=$2&args=$3 [QSA,L]

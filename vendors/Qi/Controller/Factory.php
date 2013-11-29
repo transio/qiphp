@@ -6,8 +6,9 @@ class Factory
     public static function create(\Qi\Application $application, \Qi\Http\Resource $resource)
     {
         $path = $application->getConfig()->read("path.controllers");
-        $controller = (new \Qi\Token\Token($resource->getController(), TokenCase::UNDERSCORE))->toTitle();
-        $controllerClass = "\\app\\controllers\\{$controller}Controller";
-        $controller = new $controllerClass($application, $resource);
+        $controller = new \Qi\Token\Token($resource->getController(), \Qi\Token\TokenCase::UNDERSCORE);
+        $controller = $controller->toTitle();
+        $controller = "\\app\\controllers\\{$controller}Controller";
+        return new $controller($application, $resource);
     }
 }
