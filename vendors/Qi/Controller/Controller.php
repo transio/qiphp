@@ -66,7 +66,7 @@ abstract class Controller
      */
     public function execute() {
         if (!method_exists($this, $this->_resource->getAction()))
-            throw new \Qi\Http\Exception\Http404Exception("Action not found: {$this->_resource->action}");
+            throw new Exception("Action not found: " . get_class($this) . "::" . $this->_resource->getAction());
         $this->beforeFilter();
         call_user_func_array(array($this, $this->_resource->getAction()), $this->_resource->getArgs());
         $this->afterFilter();
@@ -92,7 +92,7 @@ abstract class Controller
         
         // Merge in externally set parameters with passed-in _params
         if (!empty($params))
-            $this->+params = array_merge($this->_params, $params);
+            $this->_params = array_merge($this->_params, $params);
         
         // Generate the view file path
         $path = BASE_PATH . DS . "app" . DS . "views" . DS . $view . ".php";

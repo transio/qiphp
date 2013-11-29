@@ -14,7 +14,7 @@ define('BASE_PATH', dirname(dirname(__FILE__)));
 
 // Define a pr() function for easier debugging
 function pr($string) {
-    print("<pre>");
+    print("<pre style=\"display:block\">");
     print_r($string);
     print("</pre>");
 }
@@ -49,15 +49,9 @@ if (DEBUG) {
 // Register shutdown function
 function shutdown() {
     if ($e = error_get_last()) {
-        if (DEBUG) {
-            print "<pre><strong>>Fatal Error:</strong>\n\n";
-            print_r($e, true);
-            print("</pre>");
-        } else {
-            $f = fopen(BASE_PATH . DS . 'log' . DS . 'shutdown.log', 'a'); 
-            fwrite($f, "$e\n"); 
-            fclose($f);
-        }
+        $f = fopen(BASE_PATH . DS . 'log' . DS . 'shutdown.log', 'a'); 
+        fwrite($f, "$e\n"); 
+        fclose($f);
     }
 }
 register_shutdown_function('shutdown');

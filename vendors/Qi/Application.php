@@ -22,14 +22,18 @@ class Application
             // Execute it
             $controller->execute();
             
-        } catch (Exception $e) {
-            // Unhandled exception
-            print($e->getMessage());
-            print_r($e->getTrace());
+        } catch (\Exception $e) {
+            if (DEBUG) {
+                print("<h1>" . $e->getMessage() . "</h1>");
+                pr($e->getTrace());
+            } else {
+                // Graceful handling in shutdown function
+                throw $e;
+            }
         }
     }
 
-    public function getConfig()
+    public function &getConfig()
     {
         return $this->_config;
     }
