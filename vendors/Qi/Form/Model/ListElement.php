@@ -1,6 +1,8 @@
 <?php
 namespace Qi\Form\Model;
 
+use \Qi\Form\Enum\ListType;
+
 /**
  * The Select class represents a select input form element
  */
@@ -74,6 +76,7 @@ class ListElement extends Collection
                 $this->addOption($key, $value, $i);
             }
         }
+        return $this;
     }
     
     public function addOption($key, $value, $i=0, array $extProperties = null)
@@ -92,6 +95,7 @@ class ListElement extends Collection
         // Create the option node and apppend it to this node
         $option = $this->getOption($key, $value, $properties, $i);
         $this->addElement($option);
+        return $this;
     }
     
     
@@ -106,14 +110,15 @@ class ListElement extends Collection
         foreach ($this->childElements as $element) {
             $element->addPrefix($prefix);
         }
+        return $this;
     }
     
     /**
      * Override Element->getNode
-     * @return DOMNode the DOM Element
-     * @param $dom DOMDocument
+     * @return \DOMNode the \DOM Element
+     * @param $dom \DOMDocument
      */
-    public function getNode(DOMDocument &$dom=null)
+    public function getNode(\DOMDocument &$dom=null)
     {
         $node = parent::getNode($dom);
         return $this->wrapNode($this->dom, $node);
@@ -121,10 +126,10 @@ class ListElement extends Collection
     
     /**
      * 
-     * @return DOMNode the DOM Element
-     * @param $dom DOMDocument
+     * @return \DOMNode the \DOM Element
+     * @param $dom \DOMDocument
      */
-    protected function wrapNode(DOMDocument &$dom, DOMNode $node)
+    protected function wrapNode(\DOMDocument &$dom, \DOMNode $node)
     {
         // Placeholder for wrapper generator functinoality
         $wrapperNode = $dom->createElement("div");
@@ -144,8 +149,8 @@ class ListElement extends Collection
     
     /**
      * Placeholder for option generator functinoality
-     * @return DOMNode the DOM Element
-     * @param $dom DOMDocument
+     * @return \DOMNode the \DOM Element
+     * @param $dom \DOMDocument
      */
     protected function getOption($key, $value, array $properties = null, $i=0)
     {
@@ -184,5 +189,6 @@ class ListElement extends Collection
         foreach($this->childElements as $option) {
             $option->setValue($data);
         }
+        return $this;
     }
 }

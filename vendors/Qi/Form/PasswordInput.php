@@ -1,8 +1,6 @@
 <?php
 namespace Qi\Form;
 
-use Enum\InputType;
-
 /**
  * The PasswordInput class represents a password input form element
  */
@@ -16,7 +14,7 @@ class PasswordInput extends Input
      */
     public function __construct($name, array $properties=null)
     {
-        parent::__construct(InputType::PASSWORD, $name, $properties);
+        parent::__construct(\Qi\Form\Enum\InputType::PASSWORD, $name, $properties);
     }
     
     public function setData($data)

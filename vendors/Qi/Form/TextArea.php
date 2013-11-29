@@ -19,10 +19,10 @@ class TextArea extends Element
     
     /**
      * Override Element->getNode
-     * @return DOMNode the DOM Element
-     * @param $dom DOMDocument
+     * @return \DOMNode the \DOM Element
+     * @param $dom \DOMDocument
      */
-    public function &getNode(DOMDocument &$dom=null)
+    public function &getNode(\DOMDocument &$dom=null)
     {
         $divNode = $dom->createElement("div");
         $divNode->setAttribute("class", "qf-textarea-wrapper" . ($this->markup ? " qf-markup-{$this->markup}-wrapper" : ""));

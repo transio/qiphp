@@ -10,7 +10,7 @@ class HtmlElement extends Element
     
     /**
      * Constructor is protected, meaning Input cannot be instantiated
-     * @param $inputType InputType
+     * @param $inputType Enum\InputType
      * @param $name Object
      * @param $value Object
      * @param $title Object[optional]
@@ -25,13 +25,13 @@ class HtmlElement extends Element
     
     /**
      * Override Element->getNode
-     * @return DOMNode The DOMNode for this element
-     * @param $dom DOMDocument
+     * @return \DOMNode The \DOMNode for this element
+     * @param $dom \DOMDocument
      */
-    public function getNode(DOMDocument &$dom=null)
+    public function getNode(\DOMDocument &$dom=null)
     {
         try {
-            $htmlDom = new DOMDocument();
+            $htmlDom = new \DOMDocument();
             if ($this->name) {
                 $id = $this->getId();
                 $html = "<div id=\"{$id}\">{$this->html}</div>";

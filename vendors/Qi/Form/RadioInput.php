@@ -14,7 +14,7 @@ class RadioInput extends Input
      */
     public function __construct($name, array $properties=null)
     {
-        parent::__construct(InputType::RADIO, $name, $properties);
+        parent::__construct(\Qi\Form\Enum\InputType::RADIO, $name, $properties);
     }
     
     public function setValue($value)

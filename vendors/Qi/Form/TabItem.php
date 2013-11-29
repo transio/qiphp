@@ -24,10 +24,10 @@ class TabItem
     
     /**
      * 
-     * @return DOMElement
+     * @return \DOMElement
      * @param $dom Object
      */
-    public function &getNode(DOMDocument &$dom=null)
+    public function &getNode(\DOMDocument &$dom=null)
     {
         $aNode = $dom->createElement("a");
         $aNode->setAttribute("href", "#{$this->nodeId}");

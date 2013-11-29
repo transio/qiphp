@@ -24,10 +24,10 @@ class Fieldset extends Container
     
     /**
      * Override Container->getNode
-     * @return DOMNode The DOM Element
-     * @param $dom DOMDocument
+     * @return \DOMNode The \DOM Element
+     * @param $dom \DOMDocument
      */
-    public function &getNode(DOMDocument &$dom=null)
+    public function &getNode(\DOMDocument &$dom=null)
     {
         $node = parent::getNode($dom);
         if (!is_null($this->legend) && strlen($this->legend)) {

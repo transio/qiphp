@@ -24,15 +24,15 @@ class Select extends ListElement
             }
             */
         }
-        parent::__construct(ListType::SELECT, $name, $properties);
+        parent::__construct(Enum\ListType::SELECT, $name, $properties);
     }
     
     /**
      * 
-     * @return DOMNode the DOM Element
-     * @param $dom DOMDocument
+     * @return \DOMNode the \DOM Element
+     * @param $dom \DOMDocument
      */
-    protected function wrapNode(DOMDocument &$dom, DOMNode $node)
+    protected function wrapNode(\DOMDocument &$dom, \DOMNode $node)
     {
         $innerNode = $dom->createElement("span");
         $innerNode->setAttribute("class", "qf-{$this->listType}-inner");
@@ -43,8 +43,8 @@ class Select extends ListElement
     
     /**
      * 
-     * @return DOMNode the DOM Element
-     * @param $dom DOMDocument
+     * @return \DOMNode the \DOM Element
+     * @param $dom \DOMDocument
      */
     protected function getOption($key, $value, array $properties=null, $i=0)
     {

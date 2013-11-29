@@ -16,12 +16,12 @@ class TextInput extends Input
      */
     public function __construct($name, array $properties=null)
     {
-        parent::__construct(InputType::TEXT, $name, $properties);
+        parent::__construct(\Qi\Form\Enum\InputType::TEXT, $name, $properties);
         if (isset($properties["autocomplete"]))
             $this->autocomplete = $properties["autocomplete"];
     }
     
-    public function &getNode(DOMDocument &$dom=null)
+    public function &getNode(\DOMDocument &$dom=null)
     {
         // Autocompose
         if (is_array($this->autocompose)) {

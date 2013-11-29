@@ -1,8 +1,6 @@
 <?php
 namespace Qi\Form;
 
-use Enumb\ListType;
-
 /**
  * The RadioList class represents a radio button collection
  */
@@ -14,13 +12,13 @@ class RadioList extends ListElement
      * @param $properties Array[optional]
      */
     public function __construct($name, array $properties=null) {
-        parent::__construct(ListType::RADIO, $name, $properties);
+        parent::__construct(Enum\ListType::RADIO, $name, $properties);
     }
     
     /**
      * 
-     * @return DOMNode the DOM Element
-     * @param $dom DOMDocument
+     * @return \DOMNode the \DOM Element
+     * @param $dom \DOMDocument
      */
     protected function getOption($key, $value, array $properties = null, $i) {
         // Placeholder for option generator functinoality

@@ -1,8 +1,6 @@
 <?php
 namespace Qi\Form;
 
-use Enum\ButtonType;
-
 /**
  * The Button class represents a button form element
  */
@@ -11,7 +9,7 @@ class Button extends Element
     
     /**
      * Constructor
-     * @param $buttonType Object
+     * @param $buttonType Enum\ButtonType
      * @param $name String
      * @param $value String
      * @param $properties Array[optional]
@@ -21,7 +19,7 @@ class Button extends Element
     {
         if (is_array($properties)) {
             // New functionality
-            if (!isset($properties["type"])) $properties["type"] = ButtonType::SUBMIT;
+            if (!isset($properties["type"])) $properties["type"] = Enum\ButtonType::SUBMIT;
             if (!isset($properties["value"])) $properties["value"] = "Submit";
         } else {
             // DEPRECATED
@@ -43,10 +41,10 @@ class Button extends Element
     
     /**
      * Override Container->getNode
-     * @return DOMNode the DOM Element
-     * @param $dom DOMDocument
+     * @return \DOMNode the \DOM Element
+     * @param $dom \DOMDocument
      */
-    public function &getNode(DOMDocument &$dom=null)
+    public function &getNode(\DOMDocument &$dom=null)
     {
         if (!is_null($dom)) $this->dom = $dom;
         

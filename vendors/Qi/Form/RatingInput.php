@@ -1,8 +1,6 @@
 <?php
 namespace Qi\Form;
 
-use Enum\InputType;
-
 /**
  * The DateInput class represents a date input form element
  */
@@ -23,13 +21,13 @@ class RatingInput extends ListElement
             }
             $properties["options"] = $options;
         }
-        parent::__construct(ListType::RATING, $name, $properties);
+        parent::__construct(Enum\ListType::RATING, $name, $properties);
     }
     
     /**
      * 
-     * @return DOMNode the DOM Element
-     * @param $dom DOMDocument
+     * @return \DOMNode the \DOM Element
+     * @param $dom \DOMDocument
      */
     protected function getOption($key, $value, array $properties = null)
     {

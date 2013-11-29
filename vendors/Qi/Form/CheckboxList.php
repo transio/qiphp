@@ -14,13 +14,13 @@ class CheckboxList extends ListElement
      */
     public function __construct($name, array $properties=null)
     {
-        parent::__construct(ListType::CHECKBOX, $name, $properties);
+        parent::__construct(Enum\ListType::CHECKBOX, $name, $properties);
     }
     
     /**
      * 
-     * @return DOMNode the DOM Element
-     * @param $dom DOMDocument
+     * @return \DOMNode the \DOM Element
+     * @param $dom \DOMDocument
      */
     protected function getOption($key, $value, array $properties = null, $i=0)
     {

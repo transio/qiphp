@@ -1,15 +1,10 @@
 <?php
 namespace Qi\Form;
 
-use Enum\InputType;
-use Enum\ValidationType;
-use \Qi\Enum\DataFormat;
-use \Qi\Enum\MimeType;
-
 /**
  * The Form class represents a top-level form container.
  */
-class Form extends Container
+class Form extends Model\Container
 {
     private $checksum;
     
@@ -34,22 +29,23 @@ class Form extends Container
     {
     }
     
-    public function &getNode(DOMDocument &$dom=null) {
+    public function &getNode(\DOMDocument &$dom=null) {
     
-        // TODO - implement cmoponent to generate unique ID for all form elements
+        // TODO - implement ccmponent to generate unique ID for all form elements
         // even if they have the same $name parameter
-        global $uri;
-        $this->action = is_null($this->action) ? $uri->current() : $this->action;
+        
+        // TODO - get the Resource object via DI
+        $this->action = empty($this->action) ? "" : $this->action;
         
         switch ($this->validation) {
             // TODO - Implement multi-validation ($validation would be an array)
-            case ValidationType::BROWSER:
-                $this->addEvent(EventType::SUBMIT, "return validate(this)");
+            case Enum\ValidationType::BROWSER:
+                $this->addEvent(Enum\EventType::SUBMIT, "return validate(this)");
                 break;
-            case ValidationType::SERVER:
+            case Enum\ValidationType::SERVER:
                 // TODO - Implement server-side form validation
                 break;
-            case ValidationType::AJAX:
+            case Enum\ValidationType::AJAX:
                 // TODO - Implement ajax form validation
                 break;
             default:
@@ -129,19 +125,18 @@ JS;
     /**
      * Retrieve data from the form into an object
      * @return var Data
-     * @param $
-     * @param $fieldset String[optional] 
-     * @param $format DataFormatType[optional]
+     * @param $data String [optional] 
+     * @param $format DataFormat [optional]
      */
-    public function getData($data=null, $format=DataFormat::ASSOC_ARRAY)
+    public function getData($data=null, $format=\Qi\Archetype\Enum\DataFormat::ASSOC_ARRAY)
     {
         // Retrieve the data based upon form method
         $data = null;
         switch ($this->method) {
-            case HttpRequestMethod::POST:
+            case \Qi\Http\Method::POST:
                 $data = $_POST;
                 break;
-            case HttpRequestMethod::GET:
+            case \Qi\Http\Method::GET:
                 $data = $_GET;
                 break;
             default:
@@ -155,10 +150,10 @@ JS;
         // Return the appropriate data formate
         // TODO - implement?
         switch ($format) {
-            case DataFormat::ASSOC_ARRAY:
-            case DataFormat::OBJECT:
-            case DataFormat::XML:
-            case DataFormat::JSON:
+            case \Qi\Archetype\Enum\DataFormat::ASSOC_ARRAY:
+            case \Qi\Archetype\Enum\DataFormat::OBJECT:
+            case \Qi\Archetype\Enum\DataFormat::XML:
+            case \Qi\Archetype\Enum\DataFormat::JSON:
             default:
                 return $data;
                 break;
@@ -175,7 +170,7 @@ JS;
         // Check for File Inputs
         if (get_class($args) == "FileInput") {
             // Set the enctype to multipart-form
-            $this->enctype = MimeType::MULTIPART_FORM_DATA;
+            $this->enctype = \Qi\Enum\MimeType::MULTIPART_FORM_DATA;
         }
     }
 

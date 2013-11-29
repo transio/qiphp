@@ -48,14 +48,14 @@ class Container extends Collection {
         // If the added element is another container,
         // Tell it to register new elements with the parent (this)
         if (array_key_exists("Container", class_parents($element))) {
-            $element->addEventListener(ListenerType::ADD_ELEMENT, $this, "onChildContainerAddElement");
+            $element->addEventListener(\Qi\Form\Enum\ListenerType::ADD_ELEMENT, $this, "onChildContainerAddElement");
         }
 
         //Dispatch an event saying an element was added to this container
         $this->onChildContainerAddElement($element);
 
         // Return the element reference
-        return $element;
+        return $this;
     }
     
     /**
@@ -76,15 +76,15 @@ class Container extends Collection {
      * @param $args Array event arguements
      */
     public function onChildContainerAddElement(&$args) {
-        $this->dispatchEvent(ListenerType::ADD_ELEMENT, $args);
+        $this->dispatchEvent(\Qi\Form\Enum\ListenerType::ADD_ELEMENT, $args);
     }
     
     /**
      * 
-     * @return DOMElement
+     * @return \DOMElement
      * @param $dom Object
      */
-    public function &getTabs(DOMDocument &$dom) {
+    public function &getTabs(\DOMDocument &$dom) {
         $tabNode = $dom->createElement("ul");
         foreach ($this->tabs as $tab) {
             $tabNode->appendChild($tab->getNode($dom));
@@ -120,5 +120,6 @@ class Container extends Collection {
                 }
             }
         }
-    }    
+        return $this;
+    }
 }

@@ -2,25 +2,7 @@
 namespace Qi\Form\Model;
 
 /**
- * Base Element class
- */
-class ElementType {
-    const FORM = "form";
-    const FIELDSET = "fieldset";
-    const INPUT = "input";
-    const TEXTAREA = "textarea";
-    const SELECT = "select";
-    const OPTION = "option";
-    const BUTTON = "button";
-    
-    const DIV = "div";
-    const SPAN = "span";
-    const BR = "br";
-    const HR = "hr";
-}
-
-/**
- * A DOM HTML element wrapper
+ * A \DOM HTML element wrapper
  *
  */
 class Element {
@@ -122,7 +104,7 @@ class Element {
         
         // Test for 0 length element name
         if (strlen($elementName) == 0) {
-            throw new Exception ("Element: Name not set.");
+            throw new \Qi\Form\Exception ("Element: Name not set.");
         } else {
             // Set element name
             $this->elementName = $elementName;
@@ -248,10 +230,10 @@ class Element {
             
             case "value":
                 switch ($this->elementName) {
-                    case ElementType::SELECT:
-                    case ElementType::TEXTAREA:
-                    case ElementType::DIV:
-                    case ElementType::SPAN:
+                    case \Qi\Form\Enum\ElementType::SELECT:
+                    case \Qi\Form\Enum\ElementType::TEXTAREA:
+                    case \Qi\Form\Enum\ElementType::DIV:
+                    case \Qi\Form\Enum\ElementType::SPAN:
                         break;
                     default:
                         $this->attributes[$key] = self::encodeAttribute($value);
@@ -259,24 +241,24 @@ class Element {
                 break;
             
             // Events
-            case EventType::LOAD:
-            case EventType::UNLOAD:
-            case EventType::KEY_DOWN:
-            case EventType::KEY_UP:
-            case EventType::KEY_PRESS:
-            case EventType::MOUSE_OVER:
-            case EventType::MOUSE_OUT:
-            case EventType::MOUSE_DOWN:
-            case EventType::MOUSE_UP:
-            case EventType::CLICK:
-            case EventType::DOUBLE_CLICK:
-            case EventType::FOCUS:
-            case EventType::BLUR:
-            case EventType::PRESS:
-            case EventType::RELEASE:
-            case EventType::CHANGE:
-            case EventType::SUBMIT:
-            case EventType::RESET:
+            case \Qi\Form\Enum\EventType::LOAD:
+            case \Qi\Form\Enum\EventType::UNLOAD:
+            case \Qi\Form\Enum\EventType::KEY_DOWN:
+            case \Qi\Form\Enum\EventType::KEY_UP:
+            case \Qi\Form\Enum\EventType::KEY_PRESS:
+            case \Qi\Form\Enum\EventType::MOUSE_OVER:
+            case \Qi\Form\Enum\EventType::MOUSE_OUT:
+            case \Qi\Form\Enum\EventType::MOUSE_DOWN:
+            case \Qi\Form\Enum\EventType::MOUSE_UP:
+            case \Qi\Form\Enum\EventType::CLICK:
+            case \Qi\Form\Enum\EventType::DOUBLE_CLICK:
+            case \Qi\Form\Enum\EventType::FOCUS:
+            case \Qi\Form\Enum\EventType::BLUR:
+            case \Qi\Form\Enum\EventType::PRESS:
+            case \Qi\Form\Enum\EventType::RELEASE:
+            case \Qi\Form\Enum\EventType::CHANGE:
+            case \Qi\Form\Enum\EventType::SUBMIT:
+            case \Qi\Form\Enum\EventType::RESET:
                 $this->addEvent($key, $value);
                 break;
             
@@ -366,44 +348,23 @@ class Element {
     
     /**
      * Override the __toString functionality to return an XHTML String
-     * from the DOMDocument
+     * from the \DOMDocument
      */
     public function __toString() {
-        try {
-            // Get the fully populated node with all children
-            $node = $this->getNode();
-            
-            // Get the Node XML as a String
-            $xhtml = $this->dom->saveXml($node);
-
-            $xhtml = self::decode($xhtml);
-            
-            // XML to XHTML - add a space before trailing slashes
-            $xhtml = str_replace("/>", " />", $xhtml);
-            
-            
-            // Return the XHTML
-            return $xhtml;
-        } catch (Exception $e) {
-            return $e->getMessage();
-        }
+        // Get the fully populated node with all children
+        return $this->getNode();
     }
     
     /**
-     * Return the DOMElement
-     * @return DOMElement
-     * @param $dom DOMDocument[optional] allows chaining a single dom document to save memory
+     * Return the \DOMElement
+     * @return \DOMElement
+     * @param $dom \DOMDocument[optional] allows chaining a single dom document to save memory
      */
-    public function &getNode(DOMDocument &$dom=null) {
-        // Initialize DOM Document
-        if (get_class($dom) != "DOMDocument") {
-            $dom = $this->getDom();
-        } else {
-            $this->dom = $dom;
-        }
+    public function &getNode(\DOMDocument &$dom=null) {
+        // Initialize output buffer
+        ob_start();
         
-        // Create the node
-        $node = $dom->createElement($this->elementName);
+        echo "<{$this->elementName}";
 
         // Set name and id attributes
         if ($this->elementName != "div") $this->attributes["name"] = $this->getName();
@@ -414,13 +375,6 @@ class Element {
         
         $this->attributes["id"] = $this->getId();
         
-        // Add node attributes
-        foreach($this->attributes as $key => $value) {
-            if (!is_null($value) && !is_array($value)) {
-                $node->setAttribute($key, $value);
-            }
-        }
-
         // Concatenate the internal functional classes and append the Qi Forms 
         // element-specific class and user-supplied element styling class at the end
         $classes = implode(" ", $this->extraClasses) . " qf-{$this->elementName} {$this->class}";
@@ -438,8 +392,16 @@ class Element {
             }
             $classes .= " qf-confirm-{$confirm}";
         }
-        $node->setAttribute("class", trim($classes));
-
+        $this->attributes["class"] = trim($classes);
+        
+        // Add node attributes
+        foreach($this->attributes as $key => $value) {
+            if (!is_null($value) && !is_array($value)) {
+                $value = escape($value);
+                echo " {$key}=\"{$value}\"";
+            }
+        }
+        
         // Set the node's browser events
         foreach ($this->events as $eventType => $handlers) {
             $handlers = implode("; ", $handlers);
@@ -453,17 +415,17 @@ class Element {
     
     
     /**
-     * Get the Element's DOMDocument
-     * @return DOMDocument
+     * Get the Element's \DOMDocument
+     * @return \DOMDocument
      */
     public function &getDom() {
-        // Initialize DOM Document
-        if (get_class($this->dom) != "DOMDocument") {
-            $this->dom = new DOMDocument("1.0", "utf-8");
+        // Initialize \DOM Document
+        if (get_class($this->dom) != "\DOMDocument") {
+            $this->dom = new \DOMDocument("1.0", "utf-8");
             $this->dom->formatOutput = true;
         }
         
-        // Return the persisted DOM Document
+        // Return the persisted \DOM Document
         return $this->dom;
     }
     
@@ -474,6 +436,7 @@ class Element {
      */
     public function addClass($newClass) {
         array_push($this->extraClasses, $newClass);
+        return $this;
     }
     
     /**
@@ -486,6 +449,7 @@ class Element {
             $this->events[$eventType] = array();
         }
         array_push($this->events[$eventType], $handler);
+        return $this;
     }
     
     /**
@@ -494,6 +458,7 @@ class Element {
      */
     public function addPrefix($prefix=null) {
         array_push($this->prefixes, $prefix);
+        return $this;
     }
     
     /**
@@ -530,8 +495,8 @@ class Element {
         if ($this->elementName == "input" ||
             $this->elementName == "select" ||
             $this->elementName == "textarea" ||
-            $this->listType == ListType::CHECKBOX ||
-            $this->listType == ListType::RADIO) {
+            $this->listType == \Qi\Form\Enum\ListType::CHECKBOX ||
+            $this->listType == \Qi\Form\Enum\ListType::RADIO) {
                 return ($this->noprefix == true ? "" : $this->getPrefix()) . $this->name;
         }
     }
@@ -547,6 +512,7 @@ class Element {
     public function addEventListener($event, &$obj, $callbackFunction) {
         $callback = array($obj, $callbackFunction);
         $this->eventListeners[$event] = $callback;
+        return $this;
     }
 
     /**
@@ -567,16 +533,17 @@ class Element {
                 call_user_func($callback);
             }
         }
+        return $this;
     }
     
     /**
      * Generate a label node for this element
-     * @return DOMNode Label element
+     * @return \DOMNode Label element
      * @param $dom Object
      * @param $for Object
      * @param $title Object
      */
-    function generateLabel(DOMDocument &$dom) {
+    function generateLabel(\DOMDocument &$dom) {
         if (is_null($this->label) || $this->label == "") return null;
         $label = self::xmlDecode($this->label);
         if ($label != $this->label && strpos($label, "<") !== false && strpos($label, ">") !== false) {
@@ -611,13 +578,13 @@ class Element {
     /**
      * Generate a popup info dialog that is shown on focus of an element
      * and hidden on blur
-     * @return DOMNode Info dialog element
+     * @return \DOMNode Info dialog element
      * @param $info String The information to display in the dialog
      */
     protected function generateInfoDialog($info) {
         // Add the focus and blur listeners
-        $this->addEvent(EventType::FOCUS, "showFocusInfo({$infoId}, this)");
-        $this->addEvent(EventType::BLUR, "hideFocusInfo({$infoId}, this)");
+        $this->addEvent(\Qi\Form\Enum\EventType::FOCUS, "showFocusInfo({$infoId}, this)");
+        $this->addEvent(\Qi\Form\Enum\EventType::BLUR, "hideFocusInfo({$infoId}, this)");
         
         // Create the info dialog with help text
         $this->info = $this->dom->createElement("div");
@@ -626,7 +593,9 @@ class Element {
         $this->info->setAttribute("title", $this->title . " Info");
         $this->info->setAttribute("class", "qf-info-box");
         //$this->info->setAttribute("style", "display: none;");
+        return $this;
     }
+    
     /**
      * Load data from the element into an array or an object
      * @param $data Data The collection of data to load from
@@ -705,16 +674,19 @@ class Element {
                 break;
         }
         $this->setValue($data);
+        return $this;
     }
     
     public function setValue($value) {
         $this->value = $value;
+        return $this;
     }
     
     
     public static function encodeAttribute($value) {
         $value = self::decode($value);
         return self::xmlEncode($value);
+        return $this;
     }
     
     public static function encode($value) {

@@ -10,7 +10,7 @@ class FbmlElement extends Element
     
     /**
      * Constructor is protected, meaning Input cannot be instantiated
-     * @param $inputType InputType
+     * @param $inputType Enum\InputType
      * @param $name Object
      * @param $value Object
      * @param $title Object[optional]
@@ -24,13 +24,13 @@ class FbmlElement extends Element
     
     /**
      * Override Element->getNode
-     * @return DOMNode The DOMNode for this element
-     * @param $dom DOMDocument
+     * @return \DOMNode The \DOMNode for this element
+     * @param $dom \DOMDocument
      */
-    public function &getNode(DOMDocument &$dom=null)
+    public function &getNode(\DOMDocument &$dom=null)
     {
         try {
-            $fbmlDom = new DOMDocument();
+            $fbmlDom = new \DOMDocument();
             $fbmlDom->loadXml($this->fbml);
             return $dom->importNode($fbmlDom->documentElement, true);
         } catch (Exception $e) {

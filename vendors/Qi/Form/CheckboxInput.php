@@ -14,7 +14,7 @@ class CheckboxInput extends Input
      */
     public function __construct($name, array $properties=null)
     {
-        parent::__construct(InputType::CHECKBOX, $name, $properties);
+        parent::__construct(\Qi\Form\Enum\InputType::CHECKBOX, $name, $properties);
         if (is_null($this->value)) {
             $this->value = true;
         }

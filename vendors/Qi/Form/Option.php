@@ -35,9 +35,9 @@ class Option extends Element
     
     /**
      * Override Element->getNode
-     * Returns the DOM Element
+     * Returns the \DOM Element
      */
-    public function &getNode(DOMDocument &$dom=null)
+    public function &getNode(\DOMDocument &$dom=null)
     {
         $node = parent::getNode($dom);
         if (!is_null($this->prompt)) $node->nodeValue = $this->prompt;

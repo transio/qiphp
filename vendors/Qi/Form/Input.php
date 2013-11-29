@@ -4,11 +4,11 @@ namespace Qi\Form;
 /**
  * Input Node
  */
-class Input extends Element
+class Input extends Model\Element
 {
     /**
      * Constructor is protected, meaning Input cannot be instantiated
-     * @param $inputType InputType
+     * @param $inputType Enum\InputType
      * @param $name Object
      * @param $value Object
      * @param $title Object[optional]
@@ -24,15 +24,15 @@ class Input extends Element
     
     /**
      * Override Element->getNode
-     * @return DOMNode The DOMNode for this element
-     * @param $dom DOMDocument
+     * @return \DOMNode The \DOMNode for this element
+     * @param $dom \DOMDocument
      */
-    public function &getNode(DOMDocument &$dom=null)
+    public function &getNode(\DOMDocument &$dom=null)
     {
         $node = parent::getNode($dom);
 
         switch ($this->type) {
-            case InputType::HIDDEN:
+            case Enum\InputType::HIDDEN:
                 // Hidden inputs render input only
                         $wrapNode = $dom->createElement("div");
                         $wrapNode->appendChild($node);
@@ -51,8 +51,8 @@ class Input extends Element
 
                 if (!is_null($this->label)) $labelNode = $this->generateLabel($dom);
                 switch ($this->type) {
-                    case InputType::CHECKBOX:
-                    case InputType::RADIO:
+                    case Enum\InputType::CHECKBOX:
+                    case Enum\InputType::RADIO:
                         // Label after input for check / radio
                         $wrapperNode->appendChild($spanNode);
                         if ($labelNode) $wrapperNode->appendChild($labelNode);

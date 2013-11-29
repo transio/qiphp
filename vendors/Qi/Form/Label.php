@@ -15,7 +15,7 @@ class Label extends Element
         $this->title = $title;
     }
     
-    public function &getNode(DOMDocument &$dom=null)
+    public function &getNode(\DOMDocument &$dom=null)
     {
         $node = parent::getNode($dom);
            $node->setAttribute("for", $this->for);

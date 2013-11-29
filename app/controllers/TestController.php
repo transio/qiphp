@@ -19,6 +19,13 @@ class TestController extends \Qi\Controller\Controller
     public function index()
     {
         $this->name = "test";
+        
+        $this->form = new \Qi\Form\Form("test");
+        //$this->form
+        //    ->addElement(new TextInput("test1"))
+        //    ->addElement(new TextInput("test2"));
+        
+        pr($this->form);
         $this->render();
     }
 }

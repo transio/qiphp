@@ -33,18 +33,11 @@ require_once(BASE_PATH . "/app/conf/global.php");
 require_once(BASE_PATH . "/app/conf/local.php");
 
 // Define debug mode
-try {
-    define("DEBUG", $config->read("app.debug"));
-} catch (\Exception $e) {
-    define("DEBUG", false);
-}
+define("DEBUG", $config->read("app.debug") ? true : false);
 
 // Set error logging based on debug settings
-if (DEBUG) {
-   ini_set('error_reporting', E_ERROR | E_WARNING | E_PARSE | E_NOTICE);
-   ini_set('display_errors', true);
-} else {
-}
+ini_set('error_reporting', E_ALL);
+ini_set('display_errors', DEBUG);
 
 // Register shutdown function
 function shutdown() {

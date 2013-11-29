@@ -15,7 +15,7 @@ class DateInput extends Input
     public function __construct($name, array $properties=null)
     {
         if (is_null($properties)) $properties = array();
-        parent::__construct(InputType::TEXT, $name, $properties);
+        parent::__construct(\Qi\Form\Enum\InputType::TEXT, $name, $properties);
         $this->addClass("qf-date");
     }
 }

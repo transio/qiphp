@@ -33,7 +33,7 @@ class CaptchaInput extends Input
         if (is_null($properties)) $properties = array();
         
         // The input portion of the CAPTCHA is a text input
-        parent::__construct(InputType::TEXT, $name, $properties);
+        parent::__construct(\Qi\Form\Enum\InputType::TEXT, $name, $properties);
         
         // For CSS purposes, style this as a "captcha" input
         $this->addClass("qf-captcha");
@@ -125,10 +125,10 @@ class CaptchaInput extends Input
     
     /**
      * Override the default getNode method to add Captcha-specific functionality
-     * @return DOMElement The captcha input dom element
-     * @param $dom DOMDocument[optional] the domdocument used for rendering
+     * @return \DOMElement The captcha input dom element
+     * @param $dom \DOMDocument[optional] the domdocument used for rendering
      */
-    public function &getNode(DOMDocument &$dom=null)
+    public function &getNode(\DOMDocument &$dom=null)
     {
         // Get the ID and save to session
         $this->getSessionId();

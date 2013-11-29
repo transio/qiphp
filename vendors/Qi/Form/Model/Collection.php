@@ -29,9 +29,9 @@ class Collection extends Element {
     }
 
     /**
-     * Returns the fully populated DOM Element with all children
+     * Returns the fully populated \DOM Element with all children
      */
-    public function &getNode(DOMDocument &$dom=null) {
+    public function &getNode(\DOMDocument &$dom=null) {
         // Get the node
         $node = parent::getNode($dom);
         
@@ -86,7 +86,7 @@ class Collection extends Element {
         if (get_class($element) == "TabGroup") {
             array_push($this->tabs, new TabItem($element->getId(), $element->title, $this->wizard));
         }
-        
+        return $this;
     }
     
     /**
