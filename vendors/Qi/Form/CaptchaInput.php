@@ -125,10 +125,9 @@ class CaptchaInput extends Input
     
     /**
      * Override the default getNode method to add Captcha-specific functionality
-     * @return \DOMElement The captcha input dom element
-     * @param $dom \DOMDocument[optional] the domdocument used for rendering
+     * @return HTML string
      */
-    public function &getNode(\DOMDocument &$dom=null)
+    public function &getNode()
     {
         // Get the ID and save to session
         $this->getSessionId();
@@ -138,44 +137,15 @@ class CaptchaInput extends Input
         $node = parent::getNode($dom);
 
         // Span
-        $divNode = $dom->createElement("div");
-        $divNode->setAttribute("class", "qf-captcha-image-div");
-        $divNode->setAttribute("id", $this->getId()."__img_div");
-        
-        $spanNode = $dom->createElement("span");
-        $spanNode->setAttribute("class", "qf-captcha-image-span");
-        $spanNode->setAttribute("id", $this->getId()."__img_span");
-        
-        // Captcha Img
-        $captchaNode = $dom->createElement("img");
-        $captchaNode->setAttribute("id", $this->getId()."__img");
-        $captchaNode->setAttribute("src", "/_/qf_captcha?id=".$this->getId());
-        $captchaNode->setAttribute("class", "qf-captcha-image");
-        $captchaNode->setAttribute("alt", "CAPTCHA");
-        $spanNode->appendChild($captchaNode);
-        
-        // Refresh Img
-        $span2Node = $dom->createElement("span");
-        $span2Node->setAttribute("class", "qf-captcha-refresh-span");
-        $span2Node->setAttribute("id", $this->getId()."__refresh_span");
-        
-        $refreshImg = $dom->createElement("img");
-        $refreshImg->setAttribute("src", "/scripts/qi/reload.gif");
-        $refreshImg->setAttribute("alt", "Reload");
-        $refreshImg->setAttribute("border", "0");
-        $refreshNode = $dom->createElement("a");
-        $refreshNode->setAttribute("href", "javascript:refreshCaptcha('".$this->getId()."');");
-        $refreshNode->appendChild($refreshImg);
-        $refreshNode->appendChild($dom->createElement("p", "Reload"));
-        $span2Node->appendChild($refreshNode);
-        
-        // Wrap it
-        $divNode->appendChild($spanNode);
-        $divNode->appendChild($span2Node);
-        
-        $node->appendChild($divNode);
-        $node->setAttribute("class", $node->getAttribute("class") . " qf-captcha-wrapper");
-        return $node;
+        $id = $this->getId();
+        $html = <<<HTML
+        <div class="qf-captcha" id="{$id}_captcha">
+            <img id="{$id}__img" src="/_/qf_captcha?id={$id}" class="qf-captcha-image" alt="CAPTCHA" >
+            <a href="javascript:refreshCaptcha('{$id}');"><img src="/scripts/qi/reload.gif" alt="Reload" border="0"  /></a>
+        </div>
+        {$node}
+HTML;
+        return $html;
     }
     
     /**

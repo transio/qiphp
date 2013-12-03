@@ -30,7 +30,7 @@ class Element {
     // Browser Event handlers
     protected $events = array();
     
-    protected $dom;
+    protected $content = "";
 
     /**
      * Constructor - initializes the Element
@@ -44,10 +44,10 @@ class Element {
      *      "enctype" - String (null) - If set, will set the "enctype" attribute for the Form.
      *      "validation" - String (null) - If set, will set the validation type for the Form.
      * Attributes:
-     *    "prefix" - String($name) - If set, will set the id and name prefix for this Element or all contained Elements.
-     *    "noprefix" - Boolean (false) - If set to true, will force a no-prefix element name
+     *      "prefix" - String($name) - If set, will set the id and name prefix for this Element or all contained Elements.
+     *      "noprefix" - Boolean (false) - If set to true, will force a no-prefix element name
      *      "id" - String (null) - If set, will force an id for the Element.
-     *    "noid" - Boolean (false) - If set to true, will force element not to render an id
+     *      "noid" - Boolean (false) - If set to true, will force element not to render an id
      *      "type" - String (null) - If set, will set the "type" attribute for the Element.
      *      "class" - String ($name) - If set, will set the "class" attribute for the Element.
      *      "style" - String ($value) - If set, will set the "style" attribute for the Element.
@@ -65,6 +65,7 @@ class Element {
      *      "readonly" - Boolean (false) - If set to true, will set the "readonly" attribute of the Element.
      *      "maxlength" - int (null) - If set, will set the required max length of the Element.
      *      "tags" - String (null) - If set, allow the specified HTML tags in the input. "*" implies all tags allowed.
+     *      "for" - String (null) - 
      * Extended attributes:
      *      "auto-id" - Boolean (true) - If set to false, no id will generate.
      *      "required" - Boolean (false) - If set to true, the Element will be required.
@@ -225,6 +226,7 @@ class Element {
             case "size":
             case "rows":
             case "cols":
+            case "for":
                 $this->attributes[$key] = self::encodeAttribute($value);
                 break;
             
@@ -332,6 +334,10 @@ class Element {
                 if (!strlen($this->title)) $this->title = $value;
                 break;
                 
+            case "content":
+                $this->content = $value;
+                break;
+                
             case "info":
                 break;
                 
@@ -356,15 +362,12 @@ class Element {
     }
     
     /**
-     * Return the \DOMElement
-     * @return \DOMElement
-     * @param $dom \DOMDocument[optional] allows chaining a single dom document to save memory
+     * Return the html string
+     * @return string
      */
-    public function &getNode(\DOMDocument &$dom=null) {
-        // Initialize output buffer
-        ob_start();
+    public function &getNode(array $additional = array()) {
         
-        echo "<{$this->elementName}";
+        $node = "<{$this->elementName}";
 
         // Set name and id attributes
         if ($this->elementName != "div") $this->attributes["name"] = $this->getName();
@@ -397,16 +400,18 @@ class Element {
         // Add node attributes
         foreach($this->attributes as $key => $value) {
             if (!is_null($value) && !is_array($value)) {
-                $value = escape($value);
-                echo " {$key}=\"{$value}\"";
+                $value = addslashes($value);
+                $node .= " {$key}=\"{$value}\"";
             }
         }
         
-        // Set the node's browser events
+        // Set the browser events
         foreach ($this->events as $eventType => $handlers) {
             $handlers = implode("; ", $handlers);
-            $node->setAttribute($eventType, $handlers);
+            $node .= " {$eventType}=\"{$handlers}\"";
         }
+        
+        $node .= $this->content ? ">{$this->content}</{$this->elementName}>" : " />";
                 
         // Return the node
         return $node;

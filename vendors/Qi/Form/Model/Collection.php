@@ -31,24 +31,14 @@ class Collection extends Element {
     /**
      * Returns the fully populated \DOM Element with all children
      */
-    public function &getNode(\DOMDocument &$dom=null) {
-        // Get the node
-        $node = parent::getNode($dom);
+    public function &getNode(array $properties = array()) {
         
-        // Add tabs, if applicable
-        if (!empty($this->tabs)) {
-            $node->appendChild($this->getTabs($this->dom));
-        }
-
+        $content = isset($properties["content"]) ? $properties["content"] : "";
             
         // Add all child elements
-    $i = 0;$c = count($this->childElements);
+        $i = 0;
+        $c = count($this->childElements);
         foreach ($this->childElements as $element) {
-        //if (
-            
-        if (get_class($element) == "AccordianGroup") {
-            $GLOBALS["settings"]->html->loadScript .= "\$('" . $this->getId() . "').accordian();\n";
-        }
             $el = $element->getNode($this->dom);
             if (!is_null($el)) {
                 if (is_array($el)) {
@@ -60,6 +50,9 @@ class Collection extends Element {
                 }
             }
         }
+        
+        // Get the node
+        return parent::getNode(array("content" => $content));
         
         // Return it
         return $node;

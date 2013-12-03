@@ -29,7 +29,7 @@ class Form extends Model\Container
     {
     }
     
-    public function &getNode(\DOMDocument &$dom=null) {
+    public function &getNode() {
     
         // TODO - implement ccmponent to generate unique ID for all form elements
         // even if they have the same $name parameter
@@ -98,7 +98,7 @@ JS;
         
         $this->addElement(new HiddenInput("qf", $this->checksum, array("noid" => true, "noprefix" => true)));
         
-        return parent::getNode($dom);
+        return parent::getNode();
     }
     
     

@@ -17,14 +17,10 @@ class TabGroup extends Container
         $this->addClass("qf-tabgroup");
     }
     
-    /**
-     * Override Container->getNode
-     * @return \DOMNode The \DOM Element
-     * @param $dom \DOMDocument
-     */
-    public function &getNode(\DOMDocument &$dom=null)
+    public function &getNode(array $properties = array())
     {
-        $node = parent::getNode($dom);
-        return $node;
+        // Add tabs, if applicable
+        $properties["content"] = $this->getTabs();
+        return parent::getNode($properties);
     }
 }

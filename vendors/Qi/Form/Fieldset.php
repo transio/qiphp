@@ -12,32 +12,14 @@ class Fieldset extends Container
      * Constructor
      * @param $legend String[optional] The name (legend) of the fieldset
      */
-    public function __construct($name, $properties=null)
+    public function __construct($name, array $properties=array())
     {    
         parent::__construct("fieldset", $name, $properties);
         if (is_array($properties)) {
             if (isset($properties["legend"])) {
-                $this->legend = $properties["legend"];
+                if (empty($properties["children"])) $properties["children"] = array();
+                array_unshift($properties["children"], new HtmlElement("<legend>{$properties['legend']}</legend>"));
             }
         }
-    }
-    
-    /**
-     * Override Container->getNode
-     * @return \DOMNode The \DOM Element
-     * @param $dom \DOMDocument
-     */
-    public function &getNode(\DOMDocument &$dom=null)
-    {
-        $node = parent::getNode($dom);
-        if (!is_null($this->legend) && strlen($this->legend)) {
-            $legendNode = $dom->createElement("legend", $this->legend);
-            if ($node->hasChildNodes()) {
-                $node->insertBefore($legendNode, $node->childNodes->item(0));
-            } else {
-                $node->appendChild($legendNode);
-            }
-        }
-        return $node;
     }
 }

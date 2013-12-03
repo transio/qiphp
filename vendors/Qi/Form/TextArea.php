@@ -22,18 +22,8 @@ class TextArea extends Element
      * @return \DOMNode the \DOM Element
      * @param $dom \DOMDocument
      */
-    public function &getNode(\DOMDocument &$dom=null)
+    public function &getNode()
     {
-        $divNode = $dom->createElement("div");
-        $divNode->setAttribute("class", "qf-textarea-wrapper" . ($this->markup ? " qf-markup-{$this->markup}-wrapper" : ""));
-        $divNode->setAttribute("id", $this->getId() . self::PREFIX_SEPARATOR . "wrapper");
-        $node = parent::getNode($dom);
-        $node->nodeValue = $this->value;
-        if (!is_null($this->label)) {
-            $label = $this->generateLabel($dom);
-            $divNode->appendChild($label);
-        }
-        $divNode->appendChild($node);
-        return $divNode;
+        return parent::getNode(array("content" => $this->value));
     }
 }

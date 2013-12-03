@@ -19,9 +19,6 @@ class RadioInput extends Input
     
     public function setValue($value)
     {
-        if($this->value == $value) {
-               $this->checked = true;
-            $break;
-        }
+        $this->checked = $this->value == $value;
     }
 }

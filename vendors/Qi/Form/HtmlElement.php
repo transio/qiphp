@@ -25,23 +25,10 @@ class HtmlElement extends Element
     
     /**
      * Override Element->getNode
-     * @return \DOMNode The \DOMNode for this element
-     * @param $dom \DOMDocument
+     * @return html
      */
-    public function getNode(\DOMDocument &$dom=null)
+    public function getNode()
     {
-        try {
-            $htmlDom = new \DOMDocument();
-            if ($this->name) {
-                $id = $this->getId();
-                $html = "<div id=\"{$id}\">{$this->html}</div>";
-            } else {
-                $html = "<div>{$this->html}</div>";
-            }
-            $htmlDom->loadHTML($html);
-            return $dom->importNode($htmlDom->documentElement->firstChild->firstChild, true);
-        } catch (Exception $e) {
-            print($e->getMessage());
-        }
+        return $this->html;
     }
 }

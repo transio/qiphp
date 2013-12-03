@@ -26,21 +26,7 @@ class Select extends ListElement
         }
         parent::__construct(Enum\ListType::SELECT, $name, $properties);
     }
-    
-    /**
-     * 
-     * @return \DOMNode the \DOM Element
-     * @param $dom \DOMDocument
-     */
-    protected function wrapNode(\DOMDocument &$dom, \DOMNode $node)
-    {
-        $innerNode = $dom->createElement("span");
-        $innerNode->setAttribute("class", "qf-{$this->listType}-inner");
-        $innerNode->setAttribute("id", $this->getId() . self::PREFIX_SEPARATOR . "inner");
-        $innerNode->appendChild($node);
-        return parent::wrapNode($dom, $innerNode);
-    }
-    
+        
     /**
      * 
      * @return \DOMNode the \DOM Element

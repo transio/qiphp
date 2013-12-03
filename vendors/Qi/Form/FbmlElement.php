@@ -24,17 +24,10 @@ class FbmlElement extends Element
     
     /**
      * Override Element->getNode
-     * @return \DOMNode The \DOMNode for this element
-     * @param $dom \DOMDocument
+     * @return FBML string
      */
-    public function &getNode(\DOMDocument &$dom=null)
+    public function &getNode()
     {
-        try {
-            $fbmlDom = new \DOMDocument();
-            $fbmlDom->loadXml($this->fbml);
-            return $dom->importNode($fbmlDom->documentElement, true);
-        } catch (Exception $e) {
-            print($e->getMessage());
-        }
+        this->fbml;
     }
 }

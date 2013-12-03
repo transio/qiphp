@@ -24,21 +24,14 @@ class TabItem
     
     /**
      * 
-     * @return \DOMElement
-     * @param $dom Object
+     * @return HTML
      */
-    public function &getNode(\DOMDocument &$dom=null)
+    public function &getNode()
     {
-        $aNode = $dom->createElement("a");
-        $aNode->setAttribute("href", "#{$this->nodeId}");
-        $aNode->nodeValue = $this->title;
-        $node = $dom->createElement("li");
-        if ($this->wizard) {
-            $node->setAttribute("id", "qf_wizard" . self::PREFIX_SEPARATPR . $this->nodeId);
-            $node->setAttribute("class", "qf-wizard-tab");
-        }
-        
-        $node->appendChild($aNode);
-        return $node;
+        return <<<HTML
+            <li id="qf_wizard-{$this->nodeId}" class="qf-wizard-tab">
+                <a href="#{$this->nodeId}">{$this->title}</a>
+            </li>
+HTML;
     }
 }
