@@ -4,7 +4,7 @@ namespace Qi\Form;
 /**
  * Hyperlink Node
  */
-class FbmlElement extends Element
+class FbmlElement extends Model\Element
 {
     protected $fbml;
     

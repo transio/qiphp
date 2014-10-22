@@ -4,7 +4,7 @@ namespace Qi\Form;
 /**
  * The Option class represents a select input option element
  */
-class Option extends Element
+class Option extends Model\Element
 {
     /**
      * Constructor
@@ -25,6 +25,6 @@ class Option extends Element
     
     public function setValue($value)
     {
-        $this->selected = $this->value == $value || (is_array($value) && in_array($this->value, $value);
+        $this->selected = $this->value == $value || (is_array($value) && in_array($this->value, $value));
     }
 }

@@ -29,76 +29,13 @@ class Form extends Model\Container
     {
     }
     
-    public function &getNode() {
-    
-        // TODO - implement ccmponent to generate unique ID for all form elements
-        // even if they have the same $name parameter
-        
+    public function &getNode(array $properties=array())
+    {
         // TODO - get the Resource object via DI
         $this->action = empty($this->action) ? "" : $this->action;
-        
-        switch ($this->validation) {
-            // TODO - Implement multi-validation ($validation would be an array)
-            case Enum\ValidationType::BROWSER:
-                $this->addEvent(Enum\EventType::SUBMIT, "return validate(this)");
-                break;
-            case Enum\ValidationType::SERVER:
-                // TODO - Implement server-side form validation
-                break;
-            case Enum\ValidationType::AJAX:
-                // TODO - Implement ajax form validation
-                break;
-            default:
-                // Default - no validation
-                break;
-        }
-        
-        // Ajax Options:
-        //target:    selector   // target element(s) to be updated with server response 
-        //success:   function   // post-submit callback 
-        //url:       url        // override for form's 'action' attribute 
-        //type:      type       // 'get' or 'post', override for form's 'method' attribute 
-        //dataType:  null       // 'xml', 'script', or 'json' (expected server response type) 
-        //clearForm: true       // clear all form fields after successful submit 
-        //resetForm: true       // reset the form after successful submit 
-        //timeout:   milli 
-        if (is_array($this->ajax)) {
-            global $settings;
-            //array_push($settings->html->scripts, new HtmlScript("scripts/jquery/jquery.form.js"));
-            $id = $this->getId();
-            $options = "";
-            foreach ($this->ajax as $key => $value) {
-                switch ($key) {
-                    case "success":
-                    case "clearForm":
-                    case "resetForm":
-                    case "timeOut":
-                         // Non-String datatype
-                        break;
-                    case "target":
-                    case "url":
-                    case "type":
-                    case "dataType":
-                    default;
-                        $value = "'{$value}'";
-                        break;
-                }
-                $options .= "'{$key}': {$value}, ";
-            }
-            $settings->html->loadScript .= <<<JS
-            
-                // Form {$id} ajax handler
-                $("#{$id}").ajaxForm({
-                    {$options}
-                    beforeSubmit: ajaxValidate
-                });
-                
-JS;
-        }
-        
+        $this->addEvent(Enum\EventType::SUBMIT, "return validate(this)");
         $this->addElement(new HiddenInput("qf", $this->checksum, array("noid" => true, "noprefix" => true)));
-        
-        return parent::getNode();
+        return parent::getNode($properties);
     }
     
     

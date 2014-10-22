@@ -4,7 +4,7 @@ namespace Qi\Form;
 /**
  * @deprecated - Label Node
  */
-class Label extends Element
+class Label extends Model\Element
 {
     public function __construct($for, $title = "")
     {

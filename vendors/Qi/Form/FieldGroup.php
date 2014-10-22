@@ -4,7 +4,7 @@ namespace Qi\Form;
 /**
  * The FieldGroup class represents a group (div) of related form fields, 
  */
-class FieldGroup extends Container
+class FieldGroup extends Model\Container
 {    
     /**
      * Constructor

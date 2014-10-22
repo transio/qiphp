@@ -4,7 +4,7 @@ namespace Qi\Form;
 /**
  * The DateInput class represents a date input form element
  */
-class RatingInput extends ListElement
+class RatingInput extends Model\ListElement
 {    
     /**
      * Constructor

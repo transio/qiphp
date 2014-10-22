@@ -4,7 +4,7 @@ namespace Qi\Form;
 /**
  * Hyperlink Node
  */
-class HtmlElement extends Element
+class HtmlElement extends Model\Element
 {
     protected $html;
     

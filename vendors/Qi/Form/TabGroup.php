@@ -4,7 +4,7 @@ namespace Qi\Form;
 /**
  * The TabGroup class represents a jQuery UI tab group (div) of related form fields, 
  */
-class TabGroup extends Container
+class TabGroup extends Model\Container
 {    
     /**
      * Constructor

@@ -12,12 +12,12 @@ namespace Qi\File\Rss;
  * print($item->link);
   */
 class RssItem {
-	public $title;
-	public $description;
-	public $link;
-	public function __construct($title, $description, $link) {
-		$this->title = $title;
-		$this->description = $description;
-		$this->link = $link;
-	}
+    public $title;
+    public $description;
+    public $link;
+    public function __construct($title, $description, $link) {
+        $this->title = $title;
+        $this->description = $description;
+        $this->link = $link;
+    }
 }

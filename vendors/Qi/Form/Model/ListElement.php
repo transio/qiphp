@@ -107,7 +107,7 @@ class ListElement extends Collection
     {
         parent::addPrefix($prefix);
         // Make sure to add the prefix to all contained elements, as well
-        foreach ($this->childElements as $element) {
+        foreach ($this->_children as $element) {
             $element->addPrefix($prefix);
         }
         return $this;
@@ -118,33 +118,34 @@ class ListElement extends Collection
      * @return \DOMNode the \DOM Element
      * @param $dom \DOMDocument
      */
-    public function getNode(\DOMDocument &$dom=null)
+    public function getNode()
     {
-        $node = parent::getNode($dom);
+        $node = parent::getNode();
         return $this->wrapNode($this->dom, $node);
     }
     
     /**
      * 
      * @return \DOMNode the \DOM Element
-     * @param $dom \DOMDocument
+     * @param $node
      */
-    protected function wrapNode(\DOMDocument &$dom, \DOMNode $node)
+    protected function wrapNode($node)
     {
-        // Placeholder for wrapper generator functinoality
-        $wrapperNode = $dom->createElement("div");
-        $wrapperNode->setAttribute("class", "qf-{$this->listType}-wrapper");
-        $wrapperNode->setAttribute("id", $this->getId() . self::PREFIX_SEPARATOR . "wrapper");
+        $id = $this->getId() . self::PREFIX_SEPARATOR . "wrapper";
+        $class = "qf-{$this->listType}-wrapper";
+
         if (!is_null($this->label) && strlen($this->label)) {
-            $label = $this->generateLabel($dom);
-            $wrapperNode->appendChild($label);
+            $label = $this->generateLabel();
         }
-        $spanNode = $dom->createElement("span");
-        $spanNode->setAttribute("class", "qf-{$this->listType}-span");
-        $spanNode->setAttribute("id", $this->getId() . self::PREFIX_SEPARATOR . "span");
-        $spanNode->appendChild($node);
-        $wrapperNode->appendChild($spanNode);
-        return $wrapperNode;
+        
+        // Placeholder for wrapper generator functinoality
+        $html = <<<HTML
+            <div id="{$id}" class="{$class}">
+                {$label}
+                {$node}
+            </div>
+HTML;
+        return $html;
     }
     
     /**
@@ -186,7 +187,7 @@ class ListElement extends Collection
         parent::setData($data);
         
         // Set selected options array from supplied value
-        foreach($this->childElements as $option) {
+        foreach($this->_children as $option) {
             $option->setValue($data);
         }
         return $this;

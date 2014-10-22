@@ -4,7 +4,7 @@ namespace Qi\Form;
 /**
  * The Fieldset class represents a fieldset object, 
  */
-class Fieldset extends Container
+class Fieldset extends Model\Container
 {
     private $legend;
     

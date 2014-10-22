@@ -44,8 +44,6 @@ class Resource
             }
         }
         
-        print_r($resource);
-        
         // Set the querystring part
         $value = $_GET;
         foreach (self::$URI_PARTS as $part) {
@@ -53,7 +51,6 @@ class Resource
                 unset($value[$part]);
         }
         if (!empty($value)) $resource->set(self::QUERY, $value);
-        
         return $resource;
     }
     

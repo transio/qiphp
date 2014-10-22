@@ -15,7 +15,7 @@ class Input extends Model\Element
      * @param $required Object[optional]
      * @param $disabled Object[optional]
      */
-    public function __construct($type, $name, array $properties=null)
+    public function __construct($type, $name, array $properties=array())
     {
         $properties["type"] = $type;
         parent::__construct("input", $name, $properties);
@@ -27,15 +27,16 @@ class Input extends Model\Element
      * @return \DOMNode The \DOMNode for this element
      * @param $dom \DOMDocument
      */
-    public function &getNode(\DOMDocument &$dom=null)
+    public function &getNode(array $properties=array())
     {
-        $node = parent::getNode($dom);
-
+        $node = parent::getNode($properties);
+        return $node;
+        /*
         switch ($this->type) {
             case Enum\InputType::HIDDEN:
                 // Hidden inputs render input only
-                        $wrapNode = $dom->createElement("div");
-                        $wrapNode->appendChild($node);
+                $wrapNode = $dom->createElement("div");
+                $wrapNode->appendChild($node);
                 return $wrapNode;
                 break;
             default:
@@ -76,5 +77,6 @@ class Input extends Model\Element
                 return $wrapperNode;
                 break;
         }
+        */
     }
 }

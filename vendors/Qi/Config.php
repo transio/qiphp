@@ -13,13 +13,12 @@ class Config
         $this->_values = array();
     }
     
-    public function &write($key, $value)
+    public function write($key, $value)
     {
         $this->_values[$key] = $value;
-        return $this;
     }
     
-    public function &read($key)
+    public function read($key)
     {
         return isset($this->_values[$key]) ? $this->_values[$key] : null;
     }

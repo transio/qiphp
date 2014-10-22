@@ -65,7 +65,7 @@ class Container extends Collection {
     public function addPrefix($prefix=null) {
         parent::addPrefix($prefix);
         // Make sure to add the prefix to all contained elements, as well
-        foreach ($this->childElements as $element) {
+        foreach ($this->_children as $element) {
             $element->addPrefix($prefix);
         }
     }
@@ -101,7 +101,7 @@ class Container extends Collection {
     public function getData($data) {
         if (is_array($data)) {
             $output = array();
-            foreach ($this->childElements as $element) {
+            foreach ($this->_children as $element) {
                 $output[$element->name] = $element->getData($data);
             }
             return $output;
@@ -114,7 +114,7 @@ class Container extends Collection {
      */
     public function setData($data) {
         if (is_array($data)) {
-            foreach ($this->childElements as $element) {
+            foreach ($this->_children as $element) {
                 if (array_key_exists($element->name, $data)) {
                     $element->setData($data[$element->name]);
                 }

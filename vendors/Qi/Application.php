@@ -12,7 +12,7 @@ class Application
     
     public function run()
     {
-        try {
+//        try {
             // Get the resource
             $resource = \Qi\Http\Resource::parse();
         
@@ -22,15 +22,15 @@ class Application
             // Execute it
             $controller->execute();
             
-        } catch (\Exception $e) {
-            if (DEBUG) {
-                print("<h1>" . $e->getMessage() . "</h1>");
-                pr($e->getTrace());
-            } else {
-                // Graceful handling in shutdown function
-                throw $e;
-            }
-        }
+//        } catch (\Exception $e) {
+//            if (DEBUG) {
+//                print("<h1>" . $e->getMessage() . "</h1>");
+//                pr($e->getTrace());
+//            } else {
+//                // Graceful handling in shutdown function
+//                throw $e;
+//            }
+//        }
     }
 
     public function &getConfig()

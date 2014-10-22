@@ -30,56 +30,54 @@ class Element {
     // Browser Event handlers
     protected $events = array();
     
-    protected $content = "";
-
     /**
      * Constructor - initializes the Element
      * @return 
      * @param $elementName Object
      * @param $name Object[optional]
      * @param $properties Array[optional] Sets properties for rendering of the Element.
-     * Form Attributes:
-     *      "action" - String (null) - If set, will set the "action" attribute for the Form.
-     *      "method" - String (null) - If set, will set the "method" attribute for the Form.
-     *      "enctype" - String (null) - If set, will set the "enctype" attribute for the Form.
-     *      "validation" - String (null) - If set, will set the validation type for the Form.
-     * Attributes:
-     *      "prefix" - String($name) - If set, will set the id and name prefix for this Element or all contained Elements.
-     *      "noprefix" - Boolean (false) - If set to true, will force a no-prefix element name
-     *      "id" - String (null) - If set, will force an id for the Element.
-     *      "noid" - Boolean (false) - If set to true, will force element not to render an id
-     *      "type" - String (null) - If set, will set the "type" attribute for the Element.
-     *      "class" - String ($name) - If set, will set the "class" attribute for the Element.
-     *      "style" - String ($value) - If set, will set the "style" attribute for the Element.
-     *      "name" - String ($name) - If set, will set the "name" attribute for the Element.
-     *      "title" - String ($name) - If set, will set the "title" attribute for the Element. Default to "label" if not supplied
-     *      "value" - Variant (null) - If set, will set the "value" of the Element.  String, or Array for multi-
-     *      "size" - int (null) - If set, will set the "size" attribute of the Element.
-     *      "rows" - int (null) - If set, will set the "rows" attribute of the Element.
-     *      "cols" - int (null) - If set, will set the "cols" attribute of the Element.
-     *      "autocomplete" - Boolean (true) - If set to false, will set the "autocomplete" attribute of the Element.
-     *      "disabled" - Boolean (false) - If set to true, will set the "disabled" attribute of the Element.
-     *      "multiple" - Boolean (false) - If set to true, will set the "multiple" attribute of the Element.
-     *      "selected" - Boolean (false) - If set to true, will set the "selected" attribute of the Element.
-     *      "checked" - Boolean (false) - If set to true, will set the "checked" attribute of the Element.
-     *      "readonly" - Boolean (false) - If set to true, will set the "readonly" attribute of the Element.
-     *      "maxlength" - int (null) - If set, will set the required max length of the Element.
-     *      "tags" - String (null) - If set, allow the specified HTML tags in the input. "*" implies all tags allowed.
-     *      "for" - String (null) - 
-     * Extended attributes:
-     *      "auto-id" - Boolean (true) - If set to false, no id will generate.
-     *      "required" - Boolean (false) - If set to true, the Element will be required.
-     *      "required-symbol" - Boolean (= "required") - If set to false, no star will show when a field is required.
-     *      "confirm" - String (null) - If set, will set this field as a confirmer of specified Element.
-     *      "label" - String (null) - If set, will invoke creation of a corresponding label Element.
-     *      "minlength" - int (null) - If set, will set the required min length of the Element.
-     *      "format" - String (null) - If set, will set a required RegEx format for the Element.
-     *      "minimum" - number (null) - If set, will set a required minimum numeric or age value for the Element.
-     *      "mask" - String (null) - If set, will define a formatting mask for the field
-     *      "prompt" - String (null) - If set, will invoke creation of a prompt for Select / Check / Radio
-     *      "info" - String (null) - If set, will invoke creation of a corresponding pop-up info Element.
-     *      "markup" - String (null) - If set, will set a MarkItUp! format.
-     * Events: If set, will add the appropriate javascript event
+     *   Form Attributes:
+     *      Attribute::ACTION       - String (null) - If set, will set the "action" attribute for the Form.
+     *      Attribute::METHOD       - String (null) - If set, will set the "method" attribute for the Form.
+     *      Attribute::ENCTYPE      - String (null) - If set, will set the "enctype" attribute for the Form.
+     *      Attribute::VALIDATION   - String (null) - If set, will set the validation type for the Form.
+     *   Input Attributes:
+     *      Attribute::CHECKED      - Boolean (false) - If set to true, will set the "checked" attribute of the Element.
+     *      Attribute::CLASSNAME    - String ($name) - If set, will set the "class" attribute for the Element.
+     *      Attribute::COLS         - int (null) - If set, will set the "cols" attribute of the Element.
+     *      Attribute::DISABLED     - Boolean (false) - If set to true, will set the "disabled" attribute of the Element.
+     *      Attribute::ID           - String (null) - If set, will force an id for the Element.
+     *      Attribute::MAXLENGTH    - int (null) - If set, will set the required max length of the Element.
+     *      Attribute::MULTIPLE     - Boolean (false) - If set to true, will set the "multiple" attribute of the Element.
+     *      Attribute::NAME         - String ($name) - If set, will set the "name" attribute for the Element.
+     *      Attribute::PREFIX       - String($name) - If set, will set the id and name prefix for this Element or all contained Elements.
+     *      Attribute::READONLY     - Boolean (false) - If set to true, will set the "readonly" attribute of the Element.
+     *      Attribute::ROWS         - int (null) - If set, will set the "rows" attribute of the Element.
+     *      Attribute::SELECTED     - Boolean (false) - If set to true, will set the "selected" attribute of the Element.
+     *      Attribute::SIZE         - int (null) - If set, will set the "size" attribute of the Element.
+     *      Attribute::STYLE        - String ($value) - If set, will set the "style" attribute for the Element.
+     *      Attribute::TARGET       - String (null) - 
+     *      Attribute::TITLE        - String ($name) - If set, will set the "title" attribute for the Element. Default to "label" if not supplied
+     *      Attribute::TYPE         - String (null) - If set, will set the "type" attribute for the Element.
+     *      Attribute::VALUE        - Variant (null) - If set, will set the "value" of the Element.  String, or Array for multi-
+     *   Extended attributes:
+     *      Attribute::AUTOCOMPKETE - Boolean (true) - If set to false, will set the "autocomplete" attribute of the Element.
+     *      Attribute::AUTOID       - Boolean (true) - If set to false, no id will generate.
+     *      Attribute::REQUIRED     - Boolean (false) - If set to true, the Element will be required.
+     *      Attribute::REQUIRED_SYMBOL - Boolean (= "required") - If set to false, no star will show when a field is required.
+     *      Attribute::CONFIRM      - String (null) - If set, will set this field as a confirmer of specified Element.
+     *      Attribute::FORMAT       - String (null) - If set, will set a required RegEx format for the Element.
+     *      Attribute::INFO         - String (null) - If set, will invoke creation of a corresponding pop-up info Element.
+     *      Attribute::LABEL        - String (null) - If set, will invoke creation of a corresponding label Element.
+     *      Attribute::MARKUP       - String (null) - If set, will set a MarkItUp! format.
+     *      Attribute::MASK         - String (null) - If set, will define a formatting mask for the field
+     *      Attribute::MINIMUM      - number (null) - If set, will set a required minimum numeric or age value for the Element.
+     *      Attribute::MINLENGTH    - int (null) - If set, will set the required min length of the Element.
+     *      Attribute::NOID         - Boolean (false) - If set to true, will force element not to render an id
+     *      Attribute::NOPREFIX     - Boolean (false) - If set to true, will force a no-prefix element name
+     *      Attribute::PROMPT       - String (null) - If set, will invoke creation of a prompt for Select / Check / Radio
+     *      Attribute::TAGS         - String (null) - If set, allow the specified HTML tags in the input. "*" implies all tags allowed.
+     *   Events: If set, will add the appropriate javascript event
      *      EventType::LOAD:
      *      EventType::UNLOAD:
      *      EventType::KEY_DOWN:
@@ -223,6 +221,7 @@ class Element {
             case "class":
             case "style":
             case "title":
+            case "placeholder":
             case "size":
             case "rows":
             case "cols":
@@ -288,62 +287,48 @@ class Element {
                 
             // Extended Attributes
             case "markup":
-                $this->addClass("qf-markup-{$value}");
+                $this->attributes["data-markup"] = self::encodeAttribute($value);
                 break;
                 
             case "minlength":
-                $this->addClass("qf-minlength-{$value}");
+                $this->attributes["data-minlength"] = self::encodeAttribute($value);
                 break;
                 
             case "maxlength":
-                $this->attributes[$key] = self::encodeAttribute($value);
-                $this->addClass("qf-maxlength-{$value}");
+                $this->attributes["data-maxlength"] = self::encodeAttribute($value);
+                $this->attributes["maxlength"] = self::encodeAttribute($value);
                 break;
                 
             case "required":
-                if ($value == true) {
-                    $this->addClass("qf-required");
-                }
+                $this->attributes["data-required"] = self::encodeAttribute($value);
                 break;
                 
             case "minimum":
-                $this->addClass("qf-minimum-{$value}");
+                $this->attributes["data-minimum"] = self::encodeAttribute($value);
                 break;
                 
             case "format":
-                $value = HtmlRegex::encode($value);
-                $this->addClass("qf-format-{$value}");
+                $this->attributes["data-format"] = HtmlRegex::encode($value);
                 break;
                 
             case "mask":
-                $value = HtmlRegex::encode($value);
-                $this->addClass("qf-mask-{$value}");
+                $this->attributes["data-mask"] = HtmlRegex::encode($value);
                 break;
                 
             case "confirm":
-                // Moved to getNode
-                //$this->addClass("qf-confirm-{$value}");
+                $this->attributes["data-confirm"] = self::encodeAttribute($value);
                 break;
             
             
             // Appended Element Properties
             case "label":
                 // Label node
-                
-                // Default title to equal label
-                if (!strlen($this->title)) $this->title = $value;
-                break;
-                
-            case "content":
-                $this->content = $value;
+                if (!strlen($this->title)) {
+                    $this->title = $value;
+                }
                 break;
                 
             case "info":
-                break;
-                
-            case "prompt":
-                // Prompt value for Select (default), Checkbox, Radio, and Option
-                // Watermark value for Text, Password, and Date Inputs
                 break;
                 
             default:
@@ -365,12 +350,14 @@ class Element {
      * Return the html string
      * @return string
      */
-    public function &getNode(array $additional = array()) {
-        
+    public function &getNode(array $properties=array()) {
+        $properties = array_merge($this->properties, $properties);
         $node = "<{$this->elementName}";
 
         // Set name and id attributes
-        if ($this->elementName != "div") $this->attributes["name"] = $this->getName();
+        if (HtmlElement::supports($this->elementName, "name")) {
+            $this->attributes["name"] = $this->getName();
+        }
         
         if ($this->multiple == true) {
             $this->attributes["name"] .= "[]";
@@ -411,7 +398,7 @@ class Element {
             $node .= " {$eventType}=\"{$handlers}\"";
         }
         
-        $node .= $this->content ? ">{$this->content}</{$this->elementName}>" : " />";
+        $node .= isset($properties['content']) ? ">{$properties['content']}</{$this->elementName}>" : " />";
                 
         // Return the node
         return $node;
@@ -419,22 +406,6 @@ class Element {
     }
     
     
-    /**
-     * Get the Element's \DOMDocument
-     * @return \DOMDocument
-     */
-    public function &getDom() {
-        // Initialize \DOM Document
-        if (get_class($this->dom) != "\DOMDocument") {
-            $this->dom = new \DOMDocument("1.0", "utf-8");
-            $this->dom->formatOutput = true;
-        }
-        
-        // Return the persisted \DOM Document
-        return $this->dom;
-    }
-    
-
     /**
      * Append to the beginning of the class attribute
      * Used to pass additional information to the validation script
@@ -543,62 +514,28 @@ class Element {
     
     /**
      * Generate a label node for this element
-     * @return \DOMNode Label element
-     * @param $dom Object
-     * @param $for Object
-     * @param $title Object
+     * @return Label element
      */
-    function generateLabel(\DOMDocument &$dom) {
-        if (is_null($this->label) || $this->label == "") return null;
-        $label = self::xmlDecode($this->label);
-        if ($label != $this->label && strpos($label, "<") !== false && strpos($label, ">") !== false) {
-            // If the label contains HTML, parse it into a node
-            $d = new DomDocument();
-            $d->loadXML("<label>{$label}</label>");
-            $d->preserveWhiteSpace = false;
-            $node = $dom->importNode($d->documentElement, true);
-        } else {
-            // Otherwise, just make a plain text label node 
-            $node = $dom->createElement("label", $this->label);
+    function generateLabel() {
+        if (is_null($this->label) || $this->label == "") {
+            return "";
         }
-        $node->setAttribute("id", $this->getId() . self::PREFIX_SEPARATOR . "label");
-        $node->setAttribute("for", $this->getId());
-        $spanNode = $dom->createElement("span");
-        $spanNode->setAttribute("class", "qf-label-span");
-        $spanNode->setAttribute("id", $this->getId() . self::PREFIX_SEPARATOR . "label_span");
-        $spanNode->appendChild($node);
-        if ($this->tags) {
-            $node2 = $dom->createElement("p", "Allowed HTML: ". $this->tags);
-            $node2->setAttribute("style", "font-size: 8pt; color: #aaaaaa; margin: 0 0 2px");
-            $spanNode->appendChild($node2);
-        }
-        if ($this->info) {
-            $node2 = $dom->createElement("p", $this->info);
-            $node2->setAttribute("style", "font-size: 9pt; color: #666; margin: 0 0 2px");
-            $spanNode->appendChild($node2);
-        }
-        return $spanNode;
-    }
-    
-    /**
-     * Generate a popup info dialog that is shown on focus of an element
-     * and hidden on blur
-     * @return \DOMNode Info dialog element
-     * @param $info String The information to display in the dialog
-     */
-    protected function generateInfoDialog($info) {
-        // Add the focus and blur listeners
-        $this->addEvent(\Qi\Form\Enum\EventType::FOCUS, "showFocusInfo({$infoId}, this)");
-        $this->addEvent(\Qi\Form\Enum\EventType::BLUR, "hideFocusInfo({$infoId}, this)");
         
-        // Create the info dialog with help text
-        $this->info = $this->dom->createElement("div");
-        $this->info->appendChild($this->dom->createElement("p", $this->info));
-        $this->info->setAttribute("id", $this->getId() . "_info");
-        $this->info->setAttribute("title", $this->title . " Info");
-        $this->info->setAttribute("class", "qf-info-box");
-        //$this->info->setAttribute("style", "display: none;");
-        return $this;
+        $id =  $this->getId() . self::PREFIX_SEPARATOR . "label";
+        $for = $this->getId();
+        $label = self::xmlDecode($this->label);
+        
+        $html = "<label id=\"{$id}\" for=\"{$for}\">{$label}</label>";
+        
+        if ($this->tags) {
+            $html .= "<p class=\"allowed-tags\">Allowed HTML: {$this->tags}</p>";
+        }
+        
+        if ($this->info) {
+            $html .= "<p class=\"info\">{$this->info}</p>";
+        }
+        
+        return $html;
     }
     
     /**
@@ -740,5 +677,19 @@ class Element {
             $value = str_replace("&quot;", "\"", $value);
         }
         return $value;
+    }
+}
+
+class HtmlElement {
+    public static $ELEMENTS = array(
+        "form" => array("id", "name", ""),
+        "input" => array("id", "name", "value"),
+        "select" => array("id", "name", "value"),
+        "div" => array("id")
+    );
+    
+    public static function supports($element, $attribute) {
+        return isset(self::$ELEMENTS["element"])
+            && in_array($attribute, self::$ELEMENTS["element"]);
     }
 }

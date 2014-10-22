@@ -7,8 +7,7 @@ namespace Qi\Form\Model;
  *
  */
 class Collection extends Element {
-    protected $childElements = array();
-    protected $tabs = array();
+    protected $_children = array();
     
     /**
      * Constructor is protected - cannot be instantiated
@@ -25,30 +24,21 @@ class Collection extends Element {
      */
     public function __destruct() {
         parent::__destruct();
-        unset($this->childElements);
+        unset($this->_children);
     }
 
     /**
      * Returns the fully populated \DOM Element with all children
      */
-    public function &getNode(array $properties = array()) {
+    public function &getNode(array $properties=array()) {
         
         $content = isset($properties["content"]) ? $properties["content"] : "";
             
         // Add all child elements
         $i = 0;
-        $c = count($this->childElements);
-        foreach ($this->childElements as $element) {
-            $el = $element->getNode($this->dom);
-            if (!is_null($el)) {
-                if (is_array($el)) {
-                    foreach ($el as $e) {
-                        $node->appendChild($e);
-                    }
-                } else{
-                    $node->appendChild($el);
-                }
-            }
+        $count = count($this->_children);
+        foreach ($this->_children as $element) {
+            $content .= $element->getNode($properties);
         }
         
         // Get the node
@@ -63,21 +53,17 @@ class Collection extends Element {
      */
     public function addElement(Element &$element, $pos=null) {
         // If the position isn't specified or is invalid
-        if (is_null($pos) || !is_int($pos) || $pos > count($this->childElements)) {
+        if (is_null($pos) || !is_int($pos) || $pos > count($this->_children)) {
             // Push new item onto end of array
-            array_push($this->childElements, $element);
+            array_push($this->_children, $element);
         } else {
             // Insert new item at specified pos
             $newArray = array();
-            for ($i = 0; $i < count($this->childElements); $i++) {
+            for ($i = 0; $i < count($this->_children); $i++) {
                 $j = $i < $pos ? $i : $i+1;
                 if ($i == $pos) $newArray[$i] = $element;
-                $newArray[$j] = $this->childElements[$i];
+                $newArray[$j] = $this->_children[$i];
             }
-        }
-        
-        if (get_class($element) == "TabGroup") {
-            array_push($this->tabs, new TabItem($element->getId(), $element->title, $this->wizard));
         }
         return $this;
     }
@@ -97,7 +83,7 @@ class Collection extends Element {
      * @param $name Object
      */
     public function item($name) {
-        foreach ($this->childElements as $el) {
+        foreach ($this->_children as $el) {
             if ($el->name == $name) {
                 return $el;
             }

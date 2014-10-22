@@ -4,7 +4,7 @@ namespace Qi\Form;
 /**
  * The RadioList class represents a radio button collection
  */
-class RadioList extends ListElement
+class RadioList extends Model\ListElement
 {
     /**
      * Constructor

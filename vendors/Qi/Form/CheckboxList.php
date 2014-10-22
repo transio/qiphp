@@ -4,7 +4,7 @@ namespace Qi\Form;
 /**
  * The CheckboxList class represents a multiple checkbox form element
  */
-class CheckboxList extends ListElement
+class CheckboxList extends Model\ListElement
 {    
     /**
      * Constructor

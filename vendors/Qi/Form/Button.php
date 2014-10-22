@@ -4,7 +4,7 @@ namespace Qi\Form;
 /**
  * The Button class represents a button form element
  */
-class Button extends Element
+class Button extends Model\Element
 {
     /**
      * Constructor

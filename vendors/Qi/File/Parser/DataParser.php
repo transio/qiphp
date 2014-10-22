@@ -27,7 +27,7 @@ abstract class DataParser implements \Iterator
     /**
      * Destructor
      */
-	public function __destruct()
+    public function __destruct()
     {
         unset($this->dataFile);
         unset($this->file);
@@ -55,42 +55,42 @@ abstract class DataParser implements \Iterator
         }
         return $parser;
     }
-	
-	/**
-	 * Iterator rewind() implementation
-	 */
+    
+    /**
+     * Iterator rewind() implementation
+     */
     public function rewind()
     {
         $this->file->rewind();
     }
 
-	/**
-	 * Iterator valid() implementation
-	 */
+    /**
+     * Iterator valid() implementation
+     */
     public function valid()
     {
         return $this->file->valid();
     }
     
-	/**
-	 * Iterator current() implementation.  This method is overrided in child classes.
-	 */
+    /**
+     * Iterator current() implementation.  This method is overrided in child classes.
+     */
     public function current()
     {
         return $this->file->current();
     }
 
-	/**
-	 * Iterator key() implementation
-	 */
+    /**
+     * Iterator key() implementation
+     */
     public function key()
     {
         return $this->file->key();
     }
 
-	/**
-	 * Iterator next() implementation
-	 */
+    /**
+     * Iterator next() implementation
+     */
     public function next()
     {
         $this->file->next();

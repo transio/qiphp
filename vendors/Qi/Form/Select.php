@@ -4,7 +4,7 @@ namespace Qi\Form;
 /**
  * The Select class represents a select input form element
  */
-class Select extends ListElement
+class Select extends Model\ListElement
 {
     /**
      * Constructor

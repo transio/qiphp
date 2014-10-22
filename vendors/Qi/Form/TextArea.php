@@ -4,7 +4,7 @@ namespace Qi\Form;
 /**
  * The TextArea class represents a textarea form element
  */
-class TextArea extends Element
+class TextArea extends Model\Element
 {
     /**
      * Constructor
@@ -19,8 +19,6 @@ class TextArea extends Element
     
     /**
      * Override Element->getNode
-     * @return \DOMNode the \DOM Element
-     * @param $dom \DOMDocument
      */
     public function &getNode()
     {

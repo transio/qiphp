@@ -13,7 +13,7 @@ class CsvParser extends DataParser
      * @param $dataFile DataFile An object defining how to parse the file object
      * @param $fileObject SplFileObject Iterator of the file to be parsed
      */
-	public function __construct(DataFile &$dataFile, \SplFileObject &$fileObject)
+    public function __construct(DataFile &$dataFile, \SplFileObject &$fileObject)
     {
         parent::__construct($dataFile, $fileObject);
     }
@@ -21,7 +21,7 @@ class CsvParser extends DataParser
     /**
      * Destructor
      */
-	public function __destruct()
+    public function __destruct()
     {
         parent::__destruct();
     }
