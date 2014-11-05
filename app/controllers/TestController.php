@@ -28,4 +28,9 @@ class TestController extends \Qi\Controller\Controller
         pr($this->form);
         $this->render();
     }
+    
+    public function getThings() 
+    {
+        
+    }
 }

@@ -1,5 +1,5 @@
 <?php
-namespace Flipkey\Data\Source;
+namespace Qi\Data\Source;
 /**
  * Flipkey Abstract Data Source Factory
  */
